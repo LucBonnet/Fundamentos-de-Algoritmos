@@ -100,29 +100,13 @@ def ex4():
   dia = int(input("Digite o dia desejado: "))
   mes = input("Digite o mês desejado: ")
 
-  if dia >= 20 and mes == 'março':
+  if dia >= 20 and mes == 'março' or mes in ['abril', 'maio'] or dia < 21 and mes == 'junho':
     print('Outono')
-  elif mes in ['abril', 'maio']:
-    print('Outono')
-  elif dia < 21 and mes == 'junho':
-    print('Outono')
-  elif dia >= 21 and mes == 'junho':
+  elif dia >= 21 and mes == 'junho' or mes in ['julho', 'agosto'] or dia < 22 and mes == 'setembro':
     print('Inverno')
-  elif mes in ['julho', 'agosto']:
-    print('Inverno')
-  elif dia < 22 and mes == 'setembro':
-    print('Inverno')
-  elif dia >= 22 and mes == 'setembro':
+  elif dia >= 22 and mes == 'setembro' or mes in ['outubro', 'novembro'] or dia < 21 and mes == 'dezembro':
     print('Primavera')
-  elif mes in ['outubro', 'novembro']:
-    print('Primavera')
-  elif dia < 21 and mes == 'dezembro':
-    print('Primavera')
-  elif dia >= 21 and mes == 'dezembro':
-    print('Verão')
-  elif mes in ['janeiro', 'fevereiro']:
-    print('Verão')
-  elif dia < 20 and mes == 'março':
+  elif dia >= 21 and mes == 'dezembro' or mes in ['janeiro', 'fevereiro'] or dia < 20 and mes == 'março':
     print('Verão')
     
 # Ex 5
