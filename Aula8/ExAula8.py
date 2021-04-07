@@ -64,6 +64,7 @@ def ex3():
   if ano > 2007:
     for i in range(2006, ano+1):
       salario *= (aumento_salarial + 1)
+      # print("Aumento salarial no ano %d: %f" % (i, aumento_salarial))
       aumento_salarial *= 2
   
   print("Salário de {0}: R$ {1:.2f}".format(ano, salario))
@@ -165,4 +166,4 @@ def ex7():
 # ex4()
 # ex5()
 # ex6()
-# ex7()
+# ex7() 
