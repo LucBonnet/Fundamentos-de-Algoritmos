@@ -11,7 +11,7 @@
 # Calcula a tarifa
 def tarifa(d):
   dkm = d * 1000
-  tarifa = 10 + ((dkm/125) * 0.5)
+  tarifa = 10 + ((dkm//125) * 0.5)
   return tarifa
 
 def main():
