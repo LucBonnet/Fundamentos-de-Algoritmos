@@ -31,8 +31,8 @@ def z(n, ex):
     re = re**2 + w[0]
     im = im**2 + w[1]
 
-    print("{0} + {1}i".format(re, im))
+    print("{0:.5f} + {1:.5f}i".format(re, im))
     
     return [re, im]
 
-z(5, 'b')
+z(5, 'a')
