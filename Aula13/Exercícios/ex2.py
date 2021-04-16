@@ -15,5 +15,5 @@ for i in range(10):
   m.append(linha)
 
 print(m)
-for num in m[0]:
-  print("%4d" % num, end=" ")
+for linha in range(len(m)):
+  print(m[linha][0], end=" ")
