@@ -17,6 +17,6 @@ for i in range(20):
   else:
     impar.append(str(num))
 
-print(' '.join(numeros))
-print(' '.join(impar))
-print(' '.join(par))
+print(*numeros)
+print(*impar)
+print(*par)
