@@ -8,7 +8,7 @@ def main():
     print("| O que você deseja fazer?              |")
     print("| 1 - Criar novo jogador                |")
     print("| 2 - Exibir pontuação                  |")
-    print("| 3 - Excluir jogador                   |") 
+    print("| 3 - Excluir jogador                   |")
     print("| 4 - Iniciar um partida                |")
     print("| 5 - Sair                              |")
     print("-----------------------------------------")
@@ -30,7 +30,7 @@ def main():
       break
     else:
       # Caso a opção digitada não exista, o loop rodara novamente para pedir ums opção válida
-      print("Valor inválido!\nTente novamente\n")
+      print("Valor invalido!\nTente novamente\n")
       continue
 
 # Criar um novo usuário com pontuação, vitórias e derrotas igual a zero
@@ -40,7 +40,7 @@ def criaJogador(nome=""):
   
   # Verifica se um arquivo para esse jogador já existe
   if os.path.isfile("{0}.txt".format(nome)):
-    print("Jogador já registrado\n")
+    print("Jogador ja registrado\n")
   else:
     print("Registrando o jogador {0}\n".format(nome))
     file = open("{0}.txt".format(nome), "w")
@@ -67,36 +67,36 @@ def mostraPontuacao():
   # Verifica se o jogador existe
   if os.path.isfile("{0}.txt".format(nome)):
     file = open("{0}.txt".format(nome), "r")
-    print("Pontuação de {}: ".format(nome))
+    print("Pontuacao de {}: ".format(nome))
     # Pegar as linhas do arquivo para leitura
     historico = file.readlines()
     vitorias = historico[0].strip()
     derrotas = historico[1].strip()
-    print("Vitórias: {0}".format(vitorias))
+    print("Vitorias: {0}".format(vitorias))
     print("Derrotas: {0}\n".format(derrotas))
   else:
-    print("Jogador {} não existe".format(nome))
+    print("Jogador {} nao existe".format(nome))
 
 def start():
   jogador1 = input("Digite o nome do primeiro jogador: ")
   
-  # Verifica se o jogador existe
+  # Verifica se o jogador digitado existe
   if not os.path.isfile("{0}.txt".format(jogador1)):
-    print("Esse jogador não existe!")
+    print("Esse jogador nao existe!")
     criaJogador(jogador1)
 
   jogador2 = input("Digite o nome do segundo jogador: ")
 
-  # Verifica se o jogador existe
+  # Verifica se o jogador digitado existe
   if not os.path.isfile("{0}.txt".format(jogador2)):
-    print("Esse jogador não existe!")
+    print("Esse jogador nao existe!")
     criaJogador(jogador2)
 
-  # Armazena o jogador que irá jogar (0 = jogador1 e 1 = jogador2)
-  turno = 0
+  # Armazena o jogador que irá jogar no momento (0 = jogador1 e 1 = jogador2)
+  jogador = 0
 
   tabuleiro = []
-
+  # Preenche todo o tabuleiro com vazio (" ")
   for i in range(5):
     linha = []
     for j in range(5):
@@ -104,40 +104,94 @@ def start():
     tabuleiro.append(linha)
   
   while True:
-    mostraTabuleiro(tabuleiro)
-
-    if turno == 0: 
-      print("Vez do Jogador 1 (X):")
+    if jogador == 0: 
+      print("Vez de {} (X):".format(jogador1))
     else:
-      print("Vez do jogador 2 (O):")
+      print("Vez de {} (O):".format(jogador2))
     
     print()
 
     while True:
       # Recebe a linha da jogada
-      linha = int(input("Digite a linha desejada (1 a 5): "))
+      linha = int(input("Digite a linha desejada (0 a 4): "))
       # verica se o valor digitado está entre 1 e 5
-      while linha not in [1, 2, 3, 4, 5]:
-        linha = int(input("Valor inválido!\nDigite a linha desejada (1 a 5): "))
+      while linha not in [0, 1, 2, 3, 4]:
+        linha = int(input("Valor invalido!\nDigite a linha desejada (0 a 4): "))
       
       # Recebe a coluna da jogada
-      coluna = int(input("Digite a coluna desejada (1 a 5): "))
+      coluna = int(input("Digite a coluna desejada (0 a 4): "))
       # verica se o valor digitado está entre 1 e 5
-      while coluna not in [1, 2, 3, 4, 5]:
-        coluna = int(input("Valor inválido!\nDigite a coluna desejada (1 a 5): "))
+      while coluna not in [0, 1, 2, 3, 4]:
+        coluna = int(input("Valor invalido!\nDigite a coluna desejada (0 a 4): "))
       
       if not tabuleiro[linha][coluna] == " ":
-        print("Esta posicao ja esta preenchida")
+        print("Esta posição já está preenchida\n")
       else: 
         break
 
-    
+    if jogador == 0:
+      tabuleiro[linha][coluna] = "X"
+    else:
+      tabuleiro[linha][coluna] = "O"
 
+    # mostra o tabuleiro 
+    mostraTabuleiro(tabuleiro)
 
-    
+    # Verifica se alguem ganhou ou se o jogo empatou
+    # -1: Nada aconteceu
+    #  0: Alguém ganhou
+    #  1: Empate
+    if verificaTabuleiro(tabuleiro) == 0:
+      if jogador == 0: 
+        vencedor = jogador1
+        perdedor = jogador2
+        print(jogador1 + " (X) ganhou!")
+      else:
+        vencedor = jogador2
+        perdedor = jogador1
+        print(jogador2 + " (O) ganhou!")
+      
+      # pega os valores atuais de vitorias e derrotas do jogador vencedor
+      file = open("{}.txt".format(vencedor), "r")
+      historico = file.readlines()
+      vitorias = int(historico[0].strip())
+      derrotas = int(historico[1].strip())
+      # adiciona uma vitória
+      vitorias += 1
+
+      # Atualiza o arquivo do jogador vencedor
+      file = open("{}.txt".format(vencedor), "w")
+      file.write("{}\n".format(vitorias))
+      file.write("{}\n".format(derrotas))
+      file.close()
+
+      # pega os valores atuais de vitorias e derrotas do jogador perdedor
+      file = open("{}.txt".format(perdedor), "r")
+      historico = file.readlines()
+      vitorias = int(historico[0].strip())
+      derrotas = int(historico[1].strip())
+      # adiciona uma derrota
+      derrotas += 1
+
+      # Atualiza o arquivo do jogador perdedor
+      file = open("{}.txt".format(vencedor), "w")
+      file.write("{}\n".format(vitorias))
+      file.write("{}\n".format(derrotas))
+      file.close()
+      break
+    elif verificaTabuleiro(tabuleiro) == 1:
+      print("O jogo empatou!")
+
+    # muda o jogador atual
+    if jogador == 0:
+      jogador = 1
+    else:
+      jogador = 0
 
 # mostra o tabuleiro na tela
 def mostraTabuleiro(tabuleiro):
+  print()
+
   # Percorre todas a linhas e colunas do tabuleiro para mostra-lo 
   for i in range(len(tabuleiro)-1):
     for j in range(len(tabuleiro[0])-1):
@@ -150,5 +204,48 @@ def mostraTabuleiro(tabuleiro):
 
   print()
 
-main()
+# função para verificar se alguem ganhou ou se o jogo empatou
+# -1: Nada aconteceu
+#  0: Alguém ganhou
+#  1: Empate
+def verificaTabuleiro(tabuleiro):
+  # Verifica todas as linhas para verficar se existem 4 simbolos iguais em sequencia  
+  cont = 0
+  for i in range(len(tabuleiro)):
+    for j in range(len(tabuleiro[0])-1):
+      if tabuleiro[i][j] == tabuleiro[i][j+1] and not tabuleiro[i][j] == ' ':
+        cont += 1
+        if cont == 3:
+          return 0
+      else:
+        cont = 0
+    cont = 0
+  
+  # Verifica todas as colunas para verficar se existem 4 simbolos iguais em sequencia  
+  cont = 0
+  for i in range(len(tabuleiro[0])):
+    for j in range(len(tabuleiro)-1):
+      if tabuleiro[j][i] == tabuleiro[j+1][i] and not tabuleiro[j][i] == ' ':
+        cont += 1
+        if cont == 3:
+          return 0
+      else:
+        cont = 0
+    cont = 0
+
+ 
+
+
+  return -1
+  
+
+tabuleiro = [
+  [' ', ' ', ' ', ' ', 'X'],
+  ['O', 'O', ' ', 'X', ' '],
+  [' ', 'O', 'X', 'O', ' '],
+  [' ', ' ', ' ', 'O', ' '],
+  [' ', 'O', 'O', ' ', ' '],
+]
+
+print(verificaTabuleiro(tabuleiro))
 
