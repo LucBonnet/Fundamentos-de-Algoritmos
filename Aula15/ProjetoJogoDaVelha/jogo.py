@@ -113,17 +113,20 @@ def start():
 
     while True:
       # Recebe a linha da jogada
-      linha = int(input("Digite a linha desejada (0 a 4): "))
+      linha = input("Digite a linha desejada (0 a 4): ")
       # verica se o valor digitado está entre 1 e 5
-      while linha not in [0, 1, 2, 3, 4]:
-        linha = int(input("Valor invalido!\nDigite a linha desejada (0 a 4): "))
+      while linha not in ["0", "1", "2", "3", "4"]:
+        linha = input("Valor invalido!\nDigite a linha desejada (0 a 4): ")
       
       # Recebe a coluna da jogada
-      coluna = int(input("Digite a coluna desejada (0 a 4): "))
+      coluna = input("Digite a coluna desejada (0 a 4): ")
       # verica se o valor digitado está entre 1 e 5
-      while coluna not in [0, 1, 2, 3, 4]:
-        coluna = int(input("Valor invalido!\nDigite a coluna desejada (0 a 4): "))
+      while coluna not in ["0", "1", "2", "3", "4"]:
+        coluna = input("Valor invalido!\nDigite a coluna desejada (0 a 4): ")
       
+      linha = int(linha)
+      coluna = int(coluna)
+
       if not tabuleiro[linha][coluna] == " ":
         print("Esta posição já está preenchida\n")
       else: 
