@@ -78,14 +78,14 @@ def mostraPontuacao():
     print("Jogador {} nao existe".format(nome))
 
 def start():
-  jogador1 = input("Digite o nome do primeiro jogador: ")
+  jogador1 = input("Digite o nome do primeiro jogador (X): ")
   
   # Verifica se o jogador digitado existe
   if not os.path.isfile("{0}.txt".format(jogador1)):
     print("Esse jogador nao existe!")
     criaJogador(jogador1)
 
-  jogador2 = input("Digite o nome do segundo jogador: ")
+  jogador2 = input("Digite o nome do segundo jogador (O): ")
 
   # Verifica se o jogador digitado existe
   if not os.path.isfile("{0}.txt".format(jogador2)):
@@ -142,6 +142,8 @@ def start():
     #  0: Alguém ganhou
     #  1: Empate
     if verificaTabuleiro(tabuleiro) == 0:
+      perdedor = ""
+      vencedor = ""
       if jogador == 0: 
         vencedor = jogador1
         perdedor = jogador2
@@ -149,11 +151,12 @@ def start():
       else:
         vencedor = jogador2
         perdedor = jogador1
-        print(jogador2 + " (O) ganhou!")
-      
+        print(jogador2 + " (O) ganhou!\n")
+
       # pega os valores atuais de vitorias e derrotas do jogador vencedor
       file = open("{}.txt".format(vencedor), "r")
       historico = file.readlines()
+      file.close()
       vitorias = int(historico[0].strip())
       derrotas = int(historico[1].strip())
       # adiciona uma vitória
@@ -168,19 +171,21 @@ def start():
       # pega os valores atuais de vitorias e derrotas do jogador perdedor
       file = open("{}.txt".format(perdedor), "r")
       historico = file.readlines()
+      file.close()
       vitorias = int(historico[0].strip())
       derrotas = int(historico[1].strip())
       # adiciona uma derrota
       derrotas += 1
 
       # Atualiza o arquivo do jogador perdedor
-      file = open("{}.txt".format(vencedor), "w")
+      file = open("{}.txt".format(perdedor), "w")
       file.write("{}\n".format(vitorias))
       file.write("{}\n".format(derrotas))
       file.close()
       break
     elif verificaTabuleiro(tabuleiro) == 1:
       print("O jogo empatou!")
+      break
 
     # muda o jogador atual
     if jogador == 0:
@@ -193,14 +198,10 @@ def mostraTabuleiro(tabuleiro):
   print()
 
   # Percorre todas a linhas e colunas do tabuleiro para mostra-lo 
-  for i in range(len(tabuleiro)-1):
-    for j in range(len(tabuleiro[0])-1):
-      print(" {} |".format(tabuleiro[i][j]), end="")
-    print(" {}".format(tabuleiro[i][j+1]))
-    print("---+---+---+---+---")
-  for i in range(len(tabuleiro)-1):
-    print(" {} |".format(tabuleiro[i][j+1]), end="")
-  print(" {}".format(tabuleiro[i+1][j+1]))
+  for i in range(4):
+    print(""" {} | {} | {} | {} | {} """.format(tabuleiro[i][0], tabuleiro[i][1], tabuleiro[i][2], tabuleiro[i][3], tabuleiro[i][4]))
+    print("""---+---+---+---+---""")
+  print(""" {} | {} | {} | {} | {} """.format(tabuleiro[i+1][0], tabuleiro[i+1][1], tabuleiro[i+1][2], tabuleiro[i+1][3], tabuleiro[i+1][4]))
 
   print()
 
@@ -233,19 +234,46 @@ def verificaTabuleiro(tabuleiro):
         cont = 0
     cont = 0
 
- 
+  # vitórias possíveis nas diagonais:
+  d = [
+    [[0,0], [1,1], [2,2], [3,3]],
+    [[1,1], [2,2], [3,3], [4,4]],
+    [[0,4], [1,3], [2,2], [3,1]],
+    [[1,3], [2,2], [3,1], [4,0]],
+    [[1,0], [2,1], [3,2], [4,3]],
+    [[0,1], [1,2], [2,3], [3,4]],
+    [[0,3], [1,2], [2,1], [3,0]],
+    [[1,4], [2,3], [3,2], [4,1]],
+  ]
 
+  # percorre as posições do tabuleiro necessarias e verifica se os itens são iguais
+  cont = 0
+  for i in range(len(d)):
+    diagonal = []
+    for j in range(len(d[0])):
+      diagonal.append(tabuleiro[d[i][j][0]][d[i][j][1]])
+    for v in range(len(diagonal)-1):
+      if diagonal[v] == diagonal[v+1] and not diagonal[v] == " ":
+        cont += 1
+        if cont == 3:
+          return 0
+      else:
+        cont = 0
+    cont = 0  
 
+  # Verifica se o jogo empatou
+  cont = 0
+  for i in range(len(tabuleiro)):
+    for j in range(len(tabuleiro[0])):
+      if not tabuleiro[i][j] == " ":
+        cont += 1
+      else:
+        cont = 0
+  if cont == 25:
+    return 1
+        
+        
   return -1
-  
 
-tabuleiro = [
-  [' ', ' ', ' ', ' ', 'X'],
-  ['O', 'O', ' ', 'X', ' '],
-  [' ', 'O', 'X', 'O', ' '],
-  [' ', ' ', ' ', 'O', ' '],
-  [' ', 'O', 'O', ' ', ' '],
-]
-
-print(verificaTabuleiro(tabuleiro))
+main()
 
