@@ -95,6 +95,7 @@ def start():
   # Armazena o jogador que irá jogar no momento (0 = jogador1 e 1 = jogador2)
   jogador = 0
 
+  # limpa a variavel tabuleiro
   tabuleiro = []
   # Preenche todo o tabuleiro com vazio (" ")
   for i in range(5):
@@ -104,41 +105,46 @@ def start():
     tabuleiro.append(linha)
   
   while True:
+    # limpa o console
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    # mostra o tabuleiro 
+    mostraTabuleiro(tabuleiro)
+
     if jogador == 0: 
       print("Vez de {} (X):".format(jogador1))
     else:
       print("Vez de {} (O):".format(jogador2))
-    
-    print()
 
     while True:
       # Recebe a linha da jogada
       linha = input("Digite a linha desejada (0 a 4): ")
-      # verica se o valor digitado está entre 1 e 5
+      # verica se o valor digitado está entre 0 e 54
       while linha not in ["0", "1", "2", "3", "4"]:
         linha = input("Valor invalido!\nDigite a linha desejada (0 a 4): ")
       
       # Recebe a coluna da jogada
-      coluna = input("Digite a coluna desejada (0 a 4): ")
-      # verica se o valor digitado está entre 1 e 5
-      while coluna not in ["0", "1", "2", "3", "4"]:
-        coluna = input("Valor invalido!\nDigite a coluna desejada (0 a 4): ")
+      coluna = input("Digite a coluna desejada ('a' a 'e'): ")
+      # verica se o valor digitado está entre 'a' e 'e'
+      while coluna not in ["a", "b", "c", "d", "e"]:
+        coluna = input("Valor invalido!\nDigite a coluna desejada ('a' a 'e'): ")
       
+      colunas_letras = ["a", "b", "c", "d", "e"]
+
       linha = int(linha)
-      coluna = int(coluna)
+      coluna = int(colunas_letras.index(coluna))
 
       if not tabuleiro[linha][coluna] == " ":
         print("Esta posição já está preenchida\n")
       else: 
         break
+    
+    print()
 
     if jogador == 0:
       tabuleiro[linha][coluna] = "X"
     else:
       tabuleiro[linha][coluna] = "O"
-
-    # mostra o tabuleiro 
-    mostraTabuleiro(tabuleiro)
 
     # Verifica se alguem ganhou ou se o jogo empatou
     # -1: Nada aconteceu
@@ -201,10 +207,11 @@ def mostraTabuleiro(tabuleiro):
   print()
 
   # Percorre todas a linhas e colunas do tabuleiro para mostra-lo 
+  print("""   a   b   c   d   e\n""")
   for i in range(4):
-    print(""" {} | {} | {} | {} | {} """.format(tabuleiro[i][0], tabuleiro[i][1], tabuleiro[i][2], tabuleiro[i][3], tabuleiro[i][4]))
-    print("""---+---+---+---+---""")
-  print(""" {} | {} | {} | {} | {} """.format(tabuleiro[i+1][0], tabuleiro[i+1][1], tabuleiro[i+1][2], tabuleiro[i+1][3], tabuleiro[i+1][4]))
+    print("""{}  {} | {} | {} | {} | {} """.format(i, tabuleiro[i][0], tabuleiro[i][1], tabuleiro[i][2], tabuleiro[i][3], tabuleiro[i][4]))
+    print("""  ---+---+---+---+---""")
+  print("""{}  {} | {} | {} | {} | {} """.format(i+1, tabuleiro[i+1][0], tabuleiro[i+1][1], tabuleiro[i+1][2], tabuleiro[i+1][3], tabuleiro[i+1][4]))
 
   print()
 
