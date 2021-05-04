@@ -70,8 +70,10 @@ def mostraPontuacao():
     print("Pontuacao de {}: ".format(nome))
     # Pegar as linhas do arquivo para leitura
     historico = file.readlines()
+    # armazena os valores de vitoria e derrota do usuário
     vitorias = historico[0].strip()
     derrotas = historico[1].strip()
+    # mostra a quantidade de vitórias e derrotas do usuário
     print("Vitorias: {0}".format(vitorias))
     print("Derrotas: {0}\n".format(derrotas))
   else:
@@ -83,6 +85,7 @@ def start():
   # Verifica se o jogador digitado existe
   if not os.path.isfile("{0}.txt".format(jogador1)):
     print("Esse jogador nao existe!")
+    # cria um novo jogador caso ele não exista
     criaJogador(jogador1)
 
   jogador2 = input("Digite o nome do segundo jogador (O): ")
@@ -90,6 +93,7 @@ def start():
   # Verifica se o jogador digitado existe
   if not os.path.isfile("{0}.txt".format(jogador2)):
     print("Esse jogador nao existe!")
+    # cria um novo jogador caso ele não exista
     criaJogador(jogador2)
 
   # Armazena o jogador que irá jogar no momento (0 = jogador1 e 1 = jogador2)
@@ -106,6 +110,7 @@ def start():
   
   # Inicia um novo turno
   while True:
+    # limpa a tela
     limpaTela()
 
     # mostra o tabuleiro 
@@ -175,6 +180,7 @@ def start():
       # pega os valores atuais de vitorias e derrotas do jogador vencedor
       file = open("{}.txt".format(vencedor), "r")
       historico = file.readlines()
+      # fecha o arquivo
       file.close()
       vitorias = int(historico[0].strip())
       derrotas = int(historico[1].strip())
@@ -185,11 +191,13 @@ def start():
       file = open("{}.txt".format(vencedor), "w")
       file.write("{}\n".format(vitorias))
       file.write("{}\n".format(derrotas))
+      # fecha o arquivo
       file.close()
 
       # pega os valores atuais de vitorias e derrotas do jogador perdedor
       file = open("{}.txt".format(perdedor), "r")
       historico = file.readlines()
+      # fecha o arquivo
       file.close()
       vitorias = int(historico[0].strip())
       derrotas = int(historico[1].strip())
@@ -200,10 +208,12 @@ def start():
       file = open("{}.txt".format(perdedor), "w")
       file.write("{}\n".format(vitorias))
       file.write("{}\n".format(derrotas))
+      # fecha o arquivo
       file.close()
       break
     # Verifica se o jogo empatou
     elif verificaTabuleiro(tabuleiro) == 1: 
+      # limpa a tela
       limpaTela()
       # mostra o tabuleiro 
       mostraTabuleiro(tabuleiro)
@@ -242,6 +252,7 @@ def verificaTabuleiro(tabuleiro):
       if tabuleiro[i][j] == tabuleiro[i][j+1] and not tabuleiro[i][j] == ' ':
         cont += 1
         if cont == 3:
+          # ganhou
           return 0
       else:
         cont = 0
@@ -255,6 +266,7 @@ def verificaTabuleiro(tabuleiro):
       if tabuleiro[j][i] == tabuleiro[j+1][i] and not tabuleiro[j][i] == ' ':
         cont += 1
         if cont == 3:
+          # ganhou
           return 0
       else:
         cont = 0
@@ -293,6 +305,7 @@ def verificaTabuleiro(tabuleiro):
       if diagonal[v] == diagonal[v+1] and not diagonal[v] == " ":
         cont += 1
         if cont == 3:
+          # ganhou
           return 0
       else:
         cont = 0
@@ -307,6 +320,7 @@ def verificaTabuleiro(tabuleiro):
       else:
         cont = 0
   if cont == 25:
+    # empate
     return 1
 
   # As verificações não caíram em nenhuma opção
