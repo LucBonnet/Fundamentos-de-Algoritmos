@@ -6,7 +6,7 @@ def main():
     print("- Menu ------------------ Jogo da Velha -")
     print("|                                       |")
     print("| O que você deseja fazer?              |")
-    print("| 1 - Criar novo jogador                |")
+    print("| 1 - Novo jogador                      |")
     print("| 2 - Exibir pontuação                  |")
     print("| 3 - Excluir jogador                   |")
     print("| 4 - Iniciar um partida                |")
@@ -104,13 +104,14 @@ def start():
       linha.append(" ")
     tabuleiro.append(linha)
   
+  # Inicia um novo turno
   while True:
-    # limpa o console
-    os.system('cls' if os.name == 'nt' else 'clear')
+    limpaTela()
 
     # mostra o tabuleiro 
     mostraTabuleiro(tabuleiro)
 
+    # mostra na tela o jogador que irá jogar
     if jogador == 0: 
       print("Vez de {} (X):".format(jogador1))
     else:
@@ -119,7 +120,7 @@ def start():
     while True:
       # Recebe a linha da jogada
       linha = input("Digite a linha desejada (0 a 4): ")
-      # verica se o valor digitado está entre 0 e 54
+      # verica se o valor digitado está entre 0 e 4
       while linha not in ["0", "1", "2", "3", "4"]:
         linha = input("Valor invalido!\nDigite a linha desejada (0 a 4): ")
       
@@ -131,16 +132,20 @@ def start():
       
       colunas_letras = ["a", "b", "c", "d", "e"]
 
+      # Transforma o valor digitado nos indices da matriz
       linha = int(linha)
       coluna = int(colunas_letras.index(coluna))
 
+      # Verifica se a posição inserida já foi preenchida
       if not tabuleiro[linha][coluna] == " ":
         print("Esta posição já está preenchida\n")
       else: 
         break
-    
+
+    # Pula uma linha
     print()
 
+    # Preenche o tabuleiro com X ou O, dependendo do jogador atual
     if jogador == 0:
       tabuleiro[linha][coluna] = "X"
     else:
@@ -151,12 +156,17 @@ def start():
     #  0: Alguém ganhou
     #  1: Empate
     if verificaTabuleiro(tabuleiro) == 0:
+      limpaTela()
+      # mostra o tabuleiro 
+      mostraTabuleiro(tabuleiro)
+
       perdedor = ""
       vencedor = ""
+      # Verifica qual dos jogadores venceu e qual deles perdeu
       if jogador == 0: 
         vencedor = jogador1
         perdedor = jogador2
-        print(jogador1 + " (X) ganhou!")
+        print(jogador1 + " (X) ganhou!\n")
       else:
         vencedor = jogador2
         perdedor = jogador1
@@ -192,7 +202,11 @@ def start():
       file.write("{}\n".format(derrotas))
       file.close()
       break
-    elif verificaTabuleiro(tabuleiro) == 1:
+    # Verifica se o jogo empatou
+    elif verificaTabuleiro(tabuleiro) == 1: 
+      limpaTela()
+      # mostra o tabuleiro 
+      mostraTabuleiro(tabuleiro)
       print("O jogo empatou!")
       break
 
@@ -224,6 +238,7 @@ def verificaTabuleiro(tabuleiro):
   cont = 0
   for i in range(len(tabuleiro)):
     for j in range(len(tabuleiro[0])-1):
+      # Verifica se as posições são iguais e diferentes de vazio
       if tabuleiro[i][j] == tabuleiro[i][j+1] and not tabuleiro[i][j] == ' ':
         cont += 1
         if cont == 3:
@@ -236,6 +251,7 @@ def verificaTabuleiro(tabuleiro):
   cont = 0
   for i in range(len(tabuleiro[0])):
     for j in range(len(tabuleiro)-1):
+      # Verifica se as posições são iguais e diferentes de vazio
       if tabuleiro[j][i] == tabuleiro[j+1][i] and not tabuleiro[j][i] == ' ':
         cont += 1
         if cont == 3:
@@ -244,7 +260,7 @@ def verificaTabuleiro(tabuleiro):
         cont = 0
     cont = 0
 
-  # vitórias possíveis nas diagonais:
+  # possíveis vitórias nas diagonais:
   d = [
     [[0,0], [1,1], [2,2], [3,3]],
     [[1,1], [2,2], [3,3], [4,4]],
@@ -256,13 +272,24 @@ def verificaTabuleiro(tabuleiro):
     [[1,4], [2,3], [3,2], [4,1]],
   ]
 
-  # percorre as posições do tabuleiro necessarias e verifica se os itens são iguais
+  # percorre as posições do tabuleiro presentes nas linhas da matriz "d" e verifica se os itens são iguais
   cont = 0
   for i in range(len(d)):
     diagonal = []
     for j in range(len(d[0])):
+      # Adiciona os valores da matriz tabuleiro nas posições da linha i da matriz d em uma lista
+      # Ex:
+      # tabuleiro = [
+      #   ['X', ' ', ' ', ' ', ' '],
+      #   [' ', 'O', ' ', ' ', ' '],
+      #   [' ', ' ', ' ', ' ', ' '],
+      #   [' ', ' ', ' ', 'X', ' '],
+      #   [' ', ' ', ' ', ' ', ' '],
+      # ]
+      # lista: ['X', 'O', ' ', 'X']
       diagonal.append(tabuleiro[d[i][j][0]][d[i][j][1]])
     for v in range(len(diagonal)-1):
+      # Verifica se os valores da lista são iguais e diferentes de vazio
       if diagonal[v] == diagonal[v+1] and not diagonal[v] == " ":
         cont += 1
         if cont == 3:
@@ -271,7 +298,7 @@ def verificaTabuleiro(tabuleiro):
         cont = 0
     cont = 0  
 
-  # Verifica se o jogo empatou
+  # Verifica se o jogo empatou, ou seja, se todas as posições estão preenchidas
   cont = 0
   for i in range(len(tabuleiro)):
     for j in range(len(tabuleiro[0])):
@@ -281,9 +308,13 @@ def verificaTabuleiro(tabuleiro):
         cont = 0
   if cont == 25:
     return 1
-        
-        
+
+  # As verificações não caíram em nenhuma opção
   return -1
+
+def limpaTela():
+  # limpa o console
+  os.system('cls' if os.name == 'nt' else 'clear')
 
 main()
 
