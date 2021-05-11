@@ -7,6 +7,7 @@ from math import *
 # número complexo ao quadrado
 # num = [real, imaginaria]
 def numComplexoPot(num):
+  # Numero complexo
   re = (num[0]**2) - (num[1] ** 2)
   im = 2*num[0]*num[1]
 
