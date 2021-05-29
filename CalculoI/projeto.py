@@ -66,9 +66,6 @@ for i in range(m-1):
       valores_menores_e.append(v)
   print('----------')
   i +=1
-  print("{:0.4f}".format(1.4235116073289224e+127))
-  print(1.4235116073289224e+127 < 3)
-  print(1.4235 < 3)
   if len(valores_menores_e) == (m-1):
     k.append(i) 
 
